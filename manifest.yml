@@ -1,0 +1,6 @@
+applications:
+- name: tenantadvisor
+  memory: 512M
+  instances: 1
+  buildpack: git://github.com/mstine/heroku-buildpack-clojure.git
+  path: .

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://openui5.hana.ondemand.com/resources/sap-ui-core.js"
+          data-sap-ui-libs="sap.m,sap.ui.commons"
+          data-sap-ui-theme="sap_bluecrystal"></script>
+  <script>
+
+  var repoData = new sap.ui.model.json.JSONModel("/api/tenant/123/events");
+  sap.ui.getCore().setModel(repoData, "repos");
+
+  var list = new sap.m.List();
+
+  list.bindItems({
+     path: "repos>/", 
+     template : new sap.m.StandardListItem({ title: "{repos>name}",
+                                             description: "{repos>description}",
+                                             type: "Active",
+                                             handleListSelect: function(evt) { 
+                                                         // var context = evt.getParameter("listItem").getBindingContext();
+                                                         // app.to("page2", context); 
+                                                          app.to("page2"); 
+                                                } 
+                                            })
+   });
+
+  var page1 = new sap.m.Page("page1", {
+    title: "Tenant Advisor: Events",
+    content: list
+    });
+
+  var page2 = new sap.m.Page("page2", {
+    title: "Tenant Advisor: Answers",
+    showNavButton: true,
+    navButtonTap: function() {app.back();},
+    content: [
+      new sap.ui.layout.VerticalLayout("layout1", {
+        content: [
+          new sap.m.Label({text:"Does my LANDLORD need to provide me with notice"}),
+          new sap.m.TextArea({value:"OWNER shall give 24 hours advance notice"})
+       ]})
+     ]
+    });
+
+/*
+  sap.ui.controller("page2", {
+    onInit: function() { 
+              alert("hello");
+               }
+  });
+*/
+
+  var app = sap.m.App().addPage(page1).addPage(page2).placeAt("content");
+  </script>
+
+</head>
+
+<body id="content" class="sapUiBody">
+
+</body>
+
+</html>
