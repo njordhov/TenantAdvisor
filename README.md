@@ -1,14 +1,9 @@
 # tenantadvisor
 
-A Clojure library designed to ... well, that part is up to you.
+SF Tenant Advisor is a web- and mobile app that empowers San Francisco tenants by providing a quick answer to questions about their rights. Answers are contextualized to their location and current lease agreement.
 
 ## Usage
 
-FIXME
-
-## TODO
-
-* list events from rest api on webpage using UI5
 
 ## License
 
