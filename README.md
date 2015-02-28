@@ -2,6 +2,8 @@
 
 SF Tenant Advisor is a web- and mobile app that empowers San Francisco tenants by providing a quick answer to questions about their rights. Answers are contextualized to local legislation and their current lease agreement.
 
+Project at the San Francisco brigade of Code for America.
+
 ## Usage
 
 
