@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Code for San Francisco</title>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+$(function () {
+
+function refreshContent (refresher, map) {
+      var scs = function (data) { refresh (map, data); } 
+      $.get('https://tenantadvisor.mybluemix.net/api/contracts', {}, scs, "json")
+       // .done(function success (data) {
+       //        alert( "Load was performed." ); })
+       .fail(function(jqXHR, textStatus) {
+          alert( textStatus );
+        });
+}
+
+function updateMap (map) {
+
+}
+
+function activateAjax (map) {
+    window.setInterval(function () {refreshContent(updateMap, map)}, 1000);
+}
+
+}
+
+</script>
+
+<style>
+body {
+  margin: 0;
+}
+
+.navbar {
+  width: 100%;
+  background-color: #EEE;
+  border-bottom: thin solid dark-grey;
+  height: 2em;
+  padding: 1em;
+}
+</style>
+
+</head>
+
+<body>
+<div class="navbar">San Francisco Tenants - Leases
+</div>
+</body>
