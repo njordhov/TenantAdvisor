@@ -1,0 +1,12 @@
+h1 {
+  text-decoration: underline;
+  color: red;
+  background-color: gray;
+  margin-top: 2em;
+  border: thick solid yellow;
+  padding: 1em;
+}
+
+h2 {
+  color: salmon;
+}

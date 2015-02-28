@@ -7,7 +7,7 @@
           data-sap-ui-theme="sap_bluecrystal"></script>
   <script>
 
-  var repoData = new sap.ui.model.json.JSONModel("/api/tenant/123/events");
+  var repoData = new sap.ui.model.json.JSONModel("http://tenantadvisor.mybluemix.net/api/tenant/123/events");
   sap.ui.getCore().setModel(repoData, "repos");
 
   var list = new sap.m.List();
@@ -17,9 +17,9 @@
      template : new sap.m.StandardListItem({ title: "{repos>name}",
                                              description: "{repos>description}",
                                              type: "Active",
-                                             handleListSelect: function(evt) { 
+                                             tap: function(evt) { /* handleListSelect */
                                                          // var context = evt.getParameter("listItem").getBindingContext();
-                                                         // app.to("page2", context); 
+                                                         // app.to("page2", context);
                                                           app.to("page2"); 
                                                 } 
                                             })

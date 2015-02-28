@@ -30,6 +30,9 @@
   (GET "/api/tenant/:id/events" [id]
      (json-response
       (tenant-events id) ))
+  (GET "/api/contracts" []
+     (json-response
+      [] ))
   (route/resources "/")
   (route/not-found "Not Found"))
 
