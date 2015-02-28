@@ -33,6 +33,9 @@
   (GET "/api/contracts" []
      (json-response
       [] ))
+  (GET "/api/leases" []
+     (json-response
+      [] ))
   (route/resources "/")
   (route/not-found "Not Found"))
 
