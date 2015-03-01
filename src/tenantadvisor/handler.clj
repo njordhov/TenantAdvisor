@@ -22,6 +22,24 @@
                "Access-Control-Allow-Origin" "*"} ; security risk...
      :body body}))
 
+(def selected-tenants (atom '(
+  [37.8001062,-122.4268326]
+  [37.8001965,-122.4260634]
+  [37.8002048,-122.4260565]
+  [37.8002059,-122.4260034]
+  [37.800207,-122.423874]
+  [37.800281,-122.423322]
+  [37.800365,-122.428826]
+  [37.800392,-122.428087]
+  [37.8004086,-122.4244226])))
+
+(defn pop-tenant[]
+   (let [item (first @selected-tenants)]
+     (swap! selected-tenants (fn [v] (rest v)))
+     item))
+
+; (pop-tenant)
+
 (defroutes app-routes
   (GET "/" [] 
     (resp/redirect "/dashboard.html"))
@@ -33,6 +51,9 @@
   (GET "/api/tenant/:id/events" [id]
      (json-response
       (tenant-events id) ))
+  (GET "/api/tenant" []
+     (json-response
+       (pop-tenant)))
   (GET "/api/contracts" []
      (json-response
       [] ))

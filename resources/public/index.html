@@ -2,12 +2,23 @@
 <html>
 
 <head>
+   <script src="https://gunjs.herokuapp.com/gun.js"></script>
   <script src="https://openui5.hana.ondemand.com/resources/sap-ui-core.js"
           data-sap-ui-libs="sap.m,sap.ui.commons"
-          data-sap-ui-theme="sap_bluecrystal"></script>
-  <script>
+          data-sap-ui-theme="sap_bluecrystal">
+  </script>
 
-  var repoData = new sap.ui.model.json.JSONModel("http://tenantadvisor.mybluemix.net/api/tenant/123/events");
+  <script>
+  var gun = Gun("https://gunjs.herokuapp.com/gun");
+  var msgAlert = gun.load("tenantAdvisor/alerts").blank(function(){
+    this.set({});
+  }).on(function(data){
+     console.log('got data', data);
+  });
+  </script>
+
+  <script>
+  var repoData = new sap.ui.model.json.JSONModel("/api/tenant/123/events");
   sap.ui.getCore().setModel(repoData, "repos");
 
   var list = new sap.m.List();
@@ -21,6 +32,10 @@
                                                          // var context = evt.getParameter("listItem").getBindingContext();
                                                          // app.to("page2", context);
                                                           app.to("page2"); 
+                                                          msgAlert.set({wasTapped: "yayay" + Math.random() });
+                                                          var r1 = Math.random() / 100;
+                                                          var r2 = Math.random() / 100;
+                                                          msgAlert.set({lon: -122.42 + r1, lat: 37.80 + r2});
                                                 } 
                                             })
    });

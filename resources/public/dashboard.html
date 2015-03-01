@@ -3,7 +3,12 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
-    <title>Create web map from id</title>
+    <title>San Francisco Rental Landscape</title>
+
+    <script src="https://gunjs.herokuapp.com/gun.js"></script>
+    <script>
+    </script>
+
 
     <link rel="stylesheet" href="http://js.arcgis.com/3.12/dijit/themes/claro/claro.css">
     <link rel="stylesheet" href="http://js.arcgis.com/3.12/esri/css/esri.css">
@@ -63,7 +68,9 @@
         "esri/dijit/PopupTemplate",
         "esri/geometry/Point",
         "esri/geometry/webMercatorUtils",
-        "extras/ClusterLayer",    
+        "extras/ClusterLayer", 
+
+        "esri/geometry/Circle",  
         
         "dojo/parser",
         "dojo/ready",
@@ -77,19 +84,21 @@
         "esri/dijit/Scalebar",
         "dojo/domReady!"
       ], function(
-                      esriRequest,
-                      Graphic,
-                      Extent,
-                      SimpleMarkerSymbol,
-                      SimpleFillSymbol,
-                      PictureMarkerSymbol,
-                      ClassBreaksRenderer,
-                      GraphicsLayer,
-                      SpatialReference,
-                      PopupTemplate,
-                      Point,
-                      webMercatorUtils,
-                      ClusterLayer,
+         esriRequest,
+         Graphic,
+         Extent,
+         SimpleMarkerSymbol,
+         SimpleFillSymbol,
+         PictureMarkerSymbol,
+         ClassBreaksRenderer,
+         GraphicsLayer,
+         SpatialReference,
+         PopupTemplate,
+         Point,
+         webMercatorUtils,
+         ClusterLayer,
+
+        Circle,
 
         parser,
         ready,
@@ -103,10 +112,33 @@
         Scalebar
       ) {
 
+     
+    function drawCircle (map, gl, geopoint) { 
+          var WebMercator = webMercatorUtils;   
+          console.log("drawcircle: " + geopoint[0] + ", " + geopoint[1]);
+          // var radius = map.extent.getWidth() / 700;
+          var radius = 30.0;
+          console.log("radius: " , radius);
+          var wgs84 = new SpatialReference({wkid: 4326});
+          var point = esri.geometry.Point(geopoint, wgs84);
+
+          var mapPoint = WebMercator.project(point, map);
+          // var mapPoint = webMercatorUtils.project(point, map);
+          var symbol = new SimpleFillSymbol().setColor(null).outline.setColor("blue");
+
+          var circle = new Circle({
+              center: mapPoint,
+              geodesic: true,     // domAttr.get(geodesic, "checked"),
+              radius: radius
+            });
+          var graphic = new Graphic(circle, symbol);
+          gl.add(graphic);
+     }
+
+
         ready(function(){
 
         parser.parse();
-
 
         arcgisUtils.createMap("4314c830925f40d69a2dac4c6656a688","map").then(function(response){
           //update the app 
@@ -114,6 +146,8 @@
           dom.byId("subtitle").innerHTML = response.itemInfo.item.snippet;
 
           var map = response.map;
+
+         // CLUSTERS WHEN ZOOMED OUT
 
  /*
 
@@ -129,7 +163,7 @@
           // console.log(layer);
 
           clusterLayer = new ClusterLayer({
-              "data": layer.data, 
+              "data": layer.data, // ??????????
               "distance": 100,
               "id": "clusters",
               "labelColor": "#fff",
@@ -154,7 +188,27 @@
             map.addLayer(clusterLayer);
 */
 
-          //add the scalebar 
+         // ADD DYNAMIC LAYER --------------------------
+
+          var gl = new GraphicsLayer({ id: "circles" });
+          map.addLayer(gl);
+
+         var gun = Gun("https://gunjs.herokuapp.com/gun");
+         var channel = gun.load("tenantAdvisor/alerts").blank(function(){
+            this.set({});
+           }).on(function(data){
+            console.log('we ahve data', data);
+            console.log('geopoint:', data.lon, data.lat);
+            drawCircle(map, gl, [data.lon , data.lat]);
+            // drawCircle(map, gl, [-122.3857356, 37.6161631]);
+            // drawCircle(map, gl, [-122.48, 37.70]);
+            console.log('circle drawn', data);
+           });
+
+           channel.set({lon: 0.0, lat: 0.0});
+
+          // SCALEBAR -------------------------
+
           var scalebar = new Scalebar({
             map: map,
             scalebarUnit: "english"
@@ -171,7 +225,6 @@
 
 
         });
-
 
         });
 
