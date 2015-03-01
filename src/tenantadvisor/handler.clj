@@ -8,6 +8,7 @@
    [ring.adapter.jetty :as jetty]
    [environ.core :refer [env]]
    [cheshire.core :as json]
+   [ring.util.response :as resp]
    [tenantadvisor.views :refer [events-view]]
    [tenantadvisor.tenant :refer [tenant-events]]))
 
@@ -22,7 +23,9 @@
      :body body}))
 
 (defroutes app-routes
-  (GET "/" []  
+  (GET "/" [] 
+    (resp/redirect "/dashboard.html"))
+  (GET "/app" [] 
     (events-view))
   (GET "/api/0" [] 
     (json-response 

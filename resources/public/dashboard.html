@@ -7,12 +7,64 @@
 
     <link rel="stylesheet" href="http://js.arcgis.com/3.12/dijit/themes/claro/claro.css">
     <link rel="stylesheet" href="http://js.arcgis.com/3.12/esri/css/esri.css">
-    <!-- <link rel="stylesheet" href="css/layout.css"> -->
+    <link rel="stylesheet" href="http://developers.arcgis.com/javascript/samples/ags_createwebmapid/css/layout.css	 ">
 
+    <script>
+     var dojoConfig = { 
+            paths: {
+              extras: location.pathname.replace(/\/[^/]+$/, "") + "/extras"
+            }
+          };
+    </script>
 
     <script src="http://js.arcgis.com/3.12/"></script>
     <script>
+
+/*
       require([
+        "dojo/parser",
+        "dojo/ready",
+        "dijit/layout/BorderContainer",
+        "dijit/layout/ContentPane",
+        "dojo/dom",
+        "esri/map", 
+        "esri/urlUtils",
+        "esri/arcgis/utils",
+        "esri/dijit/Legend",
+        "esri/dijit/Scalebar",
+        "extras/ClusterLayer",
+        "dojo/domReady!"
+      ], function(
+        parser,
+        ready,
+        BorderContainer,
+        ContentPane,
+        dom,
+        Map,
+        urlUtils,
+        arcgisUtils,
+        Legend,
+        Scalebar,
+        ClusterLayer
+      ) {
+
+*/
+
+      require([ 
+       "esri/request",
+        "esri/graphic",
+        "esri/geometry/Extent",
+        "esri/symbols/SimpleMarkerSymbol",
+        "esri/symbols/SimpleFillSymbol",
+        "esri/symbols/PictureMarkerSymbol",
+        "esri/renderers/ClassBreaksRenderer",
+        "esri/layers/GraphicsLayer",
+        "esri/SpatialReference",
+        "esri/dijit/PopupTemplate",
+        "esri/geometry/Point",
+        "esri/geometry/webMercatorUtils",
+        "extras/ClusterLayer",    
+        
         "dojo/parser",
         "dojo/ready",
         "dijit/layout/BorderContainer",
@@ -25,6 +77,20 @@
         "esri/dijit/Scalebar",
         "dojo/domReady!"
       ], function(
+                      esriRequest,
+                      Graphic,
+                      Extent,
+                      SimpleMarkerSymbol,
+                      SimpleFillSymbol,
+                      PictureMarkerSymbol,
+                      ClassBreaksRenderer,
+                      GraphicsLayer,
+                      SpatialReference,
+                      PopupTemplate,
+                      Point,
+                      webMercatorUtils,
+                      ClusterLayer,
+
         parser,
         ready,
         BorderContainer,
@@ -36,6 +102,7 @@
         Legend,
         Scalebar
       ) {
+
         ready(function(){
 
         parser.parse();
@@ -48,7 +115,44 @@
 
           var map = response.map;
 
+        /*
 
+          console.log("Get Layer");
+
+          var layer = map.getLayer("leases_5286");
+
+          // map.graphicsLayerIds
+
+          console.log(layerInfo);
+          //  [Object { layer={...}, title="Leases"}, Object { layer={...}, title="Clustered Leases"}]
+
+          // console.log(layer);
+
+          clusterLayer = new ClusterLayer({
+              "data": layer.data, 
+              "distance": 100,
+              "id": "clusters",
+              "labelColor": "#fff",
+              "labelOffset": 10,
+              "resolution": map.extent.getWidth() / map.width,
+              "singleColor": "#888",
+              "singleTemplate": popupTemplate
+            });
+
+            var defaultSym = new SimpleMarkerSymbol().setSize(4);
+            var renderer = new ClassBreaksRenderer(defaultSym, "clusterCount");
+
+            var picBaseUrl = "http://static.arcgis.com/images/Symbols/Shapes/";
+            var blue = new PictureMarkerSymbol(picBaseUrl + "BluePin1LargeB.png", 32, 32).setOffset(0, 15);
+            var green = new PictureMarkerSymbol(picBaseUrl + "GreenPin1LargeB.png", 64, 64).setOffset(0, 15);
+            var red = new PictureMarkerSymbol(picBaseUrl + "RedPin1LargeB.png", 72, 72).setOffset(0, 15);
+            renderer.addBreak(0, 2, blue);
+            renderer.addBreak(2, 200, green);
+            renderer.addBreak(200, 1001, red);
+
+            clusterLayer.setRenderer(renderer);
+            map.addLayer(clusterLayer);
+*/
 
           //add the scalebar 
           var scalebar = new Scalebar({
