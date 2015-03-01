@@ -31,18 +31,21 @@
   [37.800281,-122.423322]
   [37.800365,-122.428826]
   [37.800392,-122.428087]
-  [37.8004086,-122.4244226])))
+  [37.8004086,-122.4244226]
+  [37.80041,-122.4244478]
+  [37.800428,-122.4242992]
+)))
 
 (defn pop-tenant[]
    (let [item (first @selected-tenants)]
      (swap! selected-tenants (fn [v] (rest v)))
-     item))
+     {:lat (first item) :lon (second item)}))
 
 ; (pop-tenant)
 
 (defroutes app-routes
   (GET "/" [] 
-    (resp/redirect "/dashboard.html"))
+    (resp/redirect "/app"))
   (GET "/app" [] 
     (events-view))
   (GET "/api/0" [] 

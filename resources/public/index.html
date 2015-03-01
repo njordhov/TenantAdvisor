@@ -18,6 +18,15 @@
   </script>
 
   <script>
+  var r1 = Math.random() / 1000;
+  var r2 = Math.random() / 1000;
+  var tenantGeo = {lon: -122.42 + r1, lat: 37.80 + r2};
+  $.get("http://tenantadvisor.mybluemix.net/api/tenant")
+    .done(function success (data) {
+      tenantGeo = {lon: data.lon, lat: data.lat};
+      console.log("tenantGeo: ", tenantGeo);
+    });
+
   var repoData = new sap.ui.model.json.JSONModel("/api/tenant/123/events");
   sap.ui.getCore().setModel(repoData, "repos");
 
@@ -33,9 +42,8 @@
                                                          // app.to("page2", context);
                                                           app.to("page2"); 
                                                           msgAlert.set({wasTapped: "yayay" + Math.random() });
-                                                          var r1 = Math.random() / 100;
-                                                          var r2 = Math.random() / 100;
-                                                          msgAlert.set({lon: -122.42 + r1, lat: 37.80 + r2});
+                                                         
+                                                          msgAlert.set(tenantGeo);
                                                 } 
                                             })
    });
